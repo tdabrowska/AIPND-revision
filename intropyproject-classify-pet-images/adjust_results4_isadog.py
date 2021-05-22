@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/adjust_results4_isadog.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                 
+# PROGRAMMER: Teresa Dabrowska
+# DATE CREATED: 05.01.2021                                
 # REVISED DATE: 
 # PURPOSE: Create a function adjust_results4_isadog that adjusts the results 
 #          dictionary to indicate whether or not the pet image label is of-a-dog, 
@@ -37,7 +37,38 @@
 #       results_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
-def adjust_results4_isadog(results_dic, dogfile):
+# from get_pet_labels import get_pet_labels
+# results_dict = get_pet_labels('pet_images/')
+# from classify_images import classify_images
+# results_dict = classify_images('pet_images/', results_dict, 'vgg')
+# print(type(results_dict))
+
+def adjust_results4_isadog(results_dict, dogfile):
+    dog_names_list = []
+    with open(dogfile) as f:
+        for line in f:
+            dog_names_list.append(line.strip())
+    dog_names_dict = {}
+    for i in dog_names_list:
+        if i not in dog_names_dict:
+           dog_names_dict[i] = 1
+        else: 
+            print("**Warning: Key=", i,
+                  "already exists in dog_names_dict with value=",
+                  dog_names_dict[i])
+#     print(dog_names_dict)
+    for key, value in results_dict.items():
+        pet_label = value[0]
+        classifier_label = value[1]
+        if pet_label in dog_names_dict:
+            value.append(1)
+        else:
+            value.append(0)
+        if classifier_label in dog_names_dict:
+            value.append(1)
+        else:
+            value.append(0)
+        print(value)
     """
     Adjusts the results dictionary to determine if classifier correctly 
     classified images 'as a dog' or 'not a dog' especially when not a match. 
@@ -67,4 +98,4 @@ def adjust_results4_isadog(results_dic, dogfile):
     Returns:
            None - results_dic is mutable data type so no return needed.
     """           
-    None
+# adjust_results4_isadog(results_dict, 'dognames.txt')
