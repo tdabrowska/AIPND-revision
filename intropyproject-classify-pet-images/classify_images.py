@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/classify_images.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                 
+# PROGRAMMER: Teresa Dabrowska
+# DATE CREATED: 05.01.2021                                
 # REVISED DATE: 
 # PURPOSE: Create a function classify_images that uses the classifier function 
 #          to create the classifier labels and then compares the classifier 
@@ -12,7 +12,7 @@
 #             and as in_arg.dir for function call within main. 
 #            -The results dictionary as results_dic within classify_images 
 #             function and results for the functin call within main.
-#            -The CNN model architecture as model within classify_images function
+#            -The CNN model architecture as model wihtin classify_images function
 #             and in_arg.arch for the function call within main. 
 #           This function uses the extend function to add items to the list 
 #           that's the 'value' of the results dictionary. You will be adding the
@@ -22,6 +22,8 @@
 ##
 # Imports classifier function for using CNN to classify images 
 from classifier import classifier 
+# from get_pet_labels import get_pet_labels
+# results_dict = get_pet_labels('pet_images/')
 
 # TODO 3: Define classify_images function below, specifically replace the None
 #       below by the function definition of the classify_images function. 
@@ -29,7 +31,18 @@ from classifier import classifier
 #       results_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
-def classify_images(images_dir, results_dic, model):
+def classify_images(images_dir, results_dict, model):
+    for key in results_dict:
+        classifier_label = classifier(images_dir + key, model).lower()
+        label_list = results_dict[key]
+        label = label_list[0]
+        if label in classifier_label:
+            comparison = 1
+        else:
+            comparison = 0
+#         classify_list = [classifier_label, comparison]
+        results_dict[key].extend([classifier_label, comparison])
+#         print(results_dict[key])
     """
     Creates classifier labels with classifier function, compares pet labels to 
     the classifier labels, and adds the classifier label and the comparison of 
@@ -65,4 +78,5 @@ def classify_images(images_dir, results_dic, model):
      Returns:
            None - results_dic is mutable data type so no return needed.         
     """
-    None 
+#     None 
+# classify_images('pet_images/', results_dict, 'vgg')
