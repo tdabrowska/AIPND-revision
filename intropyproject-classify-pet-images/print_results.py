@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/print_results.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:
+# PROGRAMMER: Teresa Dabrowska
+# DATE CREATED: 05.01.2021
 # REVISED DATE: 
 # PURPOSE: Create a function print_results that prints the results statistics
 #          from the results statistics dictionary (results_stats_dic). It 
@@ -62,5 +62,36 @@ def print_results(results_dic, results_stats_dic, model,
     Returns:
            None - simply printing results.
     """    
-    None
+    print('Classifier function uses {} CNN model'.format(model))
+    n_images = results_stats_dic['n_images']
+    n_dogs_img = results_stats_dic['n_dogs_img']
+    n_notdogs_img = results_stats_dic['n_notdogs_img']
+    print('Number of Images: {}'.format(n_images))
+    print('Number of Dog Images: {}'.format(n_dogs_img))
+    print('Number of "Not-a" Dog Images: {}'.format(n_notdogs_img))
+    
+    for key, value in results_stats_dic.items():
+          if key[0] == 'p':
+              key_splited = key.split('_')
+              del key_splited[0]
+              key_formatted = ' '.join(key_splited)
+#               print('{}% {}'.format(value, key_formatted.title()))
+              print(f'{value:.2f}% {key_formatted.title()}')               
+                
+    n_correct_dogs = results_stats_dic['n_correct_dogs']
+    n_correct_notdogs = results_stats_dic['n_correct_notdogs']
+    n_images = results_stats_dic['n_images']
+    n_correct_breed = results_stats_dic['n_correct_breed']
+                
+    if print_incorrect_dogs == True and n_correct_dogs + n_correct_notdogs != n_images:
+        print('Misclassified Dogs are in images: ')
+        for key, value in results_dic.items():
+            if value[3] + value[4] == 1:
+                print(key, value)
+    
+    if print_incorrect_breed == True and n_correct_breed != n_correct_dogs:
+        print("Misclassified Breed's of Dogs are in images: ")
+        for key, value in results_dic.items():
+            if value[2] == 0 and sum(value[3:]) == 2:
+                print(key, value)
                 
